@@ -1,11 +1,11 @@
 ion-content {
-  --background: rgb(254, 255, 4);
+  --background: rgb(0, 0, 0);
   --background: linear-gradient(
-    87deg,
-    rgba(254, 255, 4, 1) 0%,
-    rgba(249, 125, 10, 0.84404184036896) 100%,
-    rgba(29, 119, 144, 1) 100%
+    225deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(245, 128, 4, 1) 100%
   );
+  
   overflow: hidden;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
