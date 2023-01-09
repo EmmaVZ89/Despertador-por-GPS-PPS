@@ -1,0 +1,85 @@
+<div class="container-fluid mx-auto contenedor-gral">
+  <ion-header style="text-align:center;">DESPERTADOR POR GPS</ion-header>
+  <h1>Inicio de sesión</h1>
+  <div class="row mb-4 px-3">
+    <h4 class="mt-3 text-center" style="margin-bottom: 0.5rem; padding-bottom: 0;">
+      Inicio rápido
+    </h4>
+    <div class="contenedor-usuarios">
+      <ion-slides pager="true" scrollbar="true">
+        <ion-slide>
+          <div class="usuarios-rapidos">
+            <p>Admin</p>
+            <img
+              src="../../../assets/usuarioMujer1.png"
+              alt="admin"
+              (click)="loadFastUser(1)"
+            />
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <div class="usuarios-rapidos">
+            <p>Usuario</p>
+            <img
+              src="../../../assets/usuarioHombre.png"
+              alt="usuario"
+              (click)="loadFastUser(3)"
+            />
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <div class="usuarios-rapidos">
+            <p>Invitado</p>
+            <img
+              src="../../../assets/usuarioMujer2.png"
+              alt="usuario"
+              (click)="loadFastUser(2)"
+            />
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </div>
+  </div>
+
+  <div class="segundo-contenedor">
+    <div class="contenedor-logo">
+      <img src="../../../assets/conversando-aula.png" alt="logo" />
+    </div>
+    <div class="row px-3">
+      <div class="line"></div>
+    </div>
+    <div class="row px-3">
+      <label class="mb-1"
+        ><h6 class="mb-0 text-sm">Dirección de Correo</h6></label
+      >
+      <input
+        [(ngModel)]="email"
+        class="mb-2"
+        type="email"
+        name="email"
+        placeholder="Correo"
+      />
+    </div>
+    <div class="row px-3" style="padding-left: 20px; padding-right: 20px">
+      <label class="mb-1"><h6 class="mb-0 text-sm">Contraseña</h6></label>
+      <input
+        [(ngModel)]="password"
+        type="password"
+        name="password"
+        placeholder="Contraseña"
+      />
+    </div>
+    <div class="row mb-3 px-3">
+      <button
+        type="submit"
+        class="btn btn-ingresar text-center"
+        (click)="loginUser()"
+      >
+        Ingresar
+      </button>
+    </div>
+    <div class="row px-3">
+      <div class="line"></div>
+    </div>
+  </div>
+</div>
