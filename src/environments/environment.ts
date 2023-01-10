@@ -12,7 +12,11 @@ export const environment = {
     authDomain: 'pps-pp.firebaseapp.com',
     messagingSenderId: '494687547832',
   },
-  production: false
+  production: false,
+  mapbox: {
+    accessToken:
+      'pk.eyJ1IjoiZW1tYXZ6IiwiYSI6ImNsY3E3Z3F0ZjAzOGgzbnBocGRrZTdsdW8ifQ.PwWJ3XLzRIqWr6CZP30f9Q',
+  },
 };
 
 /*

@@ -1,4 +1,64 @@
 <ion-content>
+  <!--******************************* LOGOUT  *******************************-->
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="dark">
+      <ion-icon name="menu-sharp"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button
+        (click)="logoutUser()"
+        style="border: 1px solid #000; border-radius: 50%"
+        ><ion-icon
+          name="exit-sharp"
+          style="
+            color: #f00;
+            background: rgb(255, 255, 255);
+            padding: 5px;
+            font-size: 3rem;
+          "
+        ></ion-icon
+      ></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <!--******************************* PRINCIPAL *******************************-->
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h2>Ubicación Actual:</h2>
+        ]
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let key of keys">
+      <!-- <h2>Ubicación Actual: </h2>] -->
+      <ion-col style="text-align: right">{{key}}</ion-col>
+      <ion-col style="text-align: left; font-weight: bold"
+        >{{results[key]}}</ion-col
+      >
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-searchbar
+          debounce="500"
+          (ionChange)="search($event)"
+          [value]="selectedAddress"
+        ></ion-searchbar>
+        <div style="position: relative; width: 100%; z-index: 999">
+          <ion-list lines="none" *ngIf="addresses.length > 0">
+            <ion-item
+              button
+              *ngFor="let address of addresses"
+              (click)="onSelect(address)"
+            >
+              <ion-icon name="pin"></ion-icon>
+              {{address}}
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <!--******************************* SPINNER *******************************-->
   <ion-spinner
     *ngIf="pressedButton"
