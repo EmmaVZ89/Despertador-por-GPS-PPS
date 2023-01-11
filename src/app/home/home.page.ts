@@ -33,6 +33,9 @@ export class HomePage implements OnInit {
   results: NativeGeocoderResult;
   keys: string[] = [];
 
+  minimunDistance: number;
+  currentDistance: number;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -45,8 +48,7 @@ export class HomePage implements OnInit {
       if (user) {
         this.user = user;
         this.printCurrentPosition();
-
-        // this.printCurrentPosition();
+        // this.calcularDistanciaEntreDosCoordenadas();
       }
     });
   } // end of ngOnInit
@@ -74,8 +76,17 @@ export class HomePage implements OnInit {
     this.mapboxService.search_word(address).subscribe((features: Feature[]) => {
       this.latitude = features[0].center[1];
       this.longitude = features[0].center[0];
+      this.currentDistance = Math.round(
+        this.calculateDistanceBetweenTwoCoordinates(
+          this.currentLatitude,
+          this.currentLongitude,
+          this.latitude,
+          this.longitude
+        ) * 1000
+      );
+      // console.log("Distancia = ", Math.round(this.currentDistance*1000), " mts");
+      // console.log(this.selectedAddress, ' ', this.latitude, ' ', this.longitude);
     });
-    console.log(this.selectedAddress, ' ', this.latitude, ' ', this.longitude);
     this.addresses = [];
   }
 
@@ -89,32 +100,35 @@ export class HomePage implements OnInit {
       maxResults: 1,
       useLocale: false,
     };
-    this.nativeGeocoder.reverseGeocode(this.currentLatitude, this.currentLongitude, options)
-    .then((results: NativeGeocoderResult[]) => {
-      this.results = results[0];
-      this.keys = Object.keys(this.results);
-    })
+    this.nativeGeocoder
+      .reverseGeocode(this.currentLatitude, this.currentLongitude, options)
+      .then((results: NativeGeocoderResult[]) => {
+        this.results = results[0];
+        this.keys = Object.keys(this.results);
+      });
+  }
 
-    // const options: NativeGeocoderOptions = {
-    //   useLocale: true,
-    //   maxResults: 5,
-    // };
+  calculateDistanceBetweenTwoCoordinates(lat1, lon1, lat2, lon2) {
+    // Convertir todas las coordenadas a radianes
+    lat1 = this.degreesToRadians(lat1);
+    lon1 = this.degreesToRadians(lon1);
+    lat2 = this.degreesToRadians(lat2);
+    lon2 = this.degreesToRadians(lon2);
+    // Aplicar fórmula
+    const RADIO_TIERRA_EN_KILOMETROS = 6371;
+    let diferenciaEntreLongitudes = lon2 - lon1;
+    let diferenciaEntreLatitudes = lat2 - lat1;
+    let a =
+      Math.pow(Math.sin(diferenciaEntreLatitudes / 2.0), 2) +
+      Math.cos(lat1) *
+        Math.cos(lat2) *
+        Math.pow(Math.sin(diferenciaEntreLongitudes / 2.0), 2);
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return RADIO_TIERRA_EN_KILOMETROS * c;
+  }
 
-    // this.nativeGeocoder
-    //   .reverseGeocode(
-    //     coordinates.coords.latitude,
-    //     coordinates.coords.longitude,
-    //     options
-    //   )
-    //   .then((result: NativeGeocoderResult[]) => console.log(result[0]))
-    //   .catch((error: any) => console.log(error));
-
-    // this.nativeGeocoder
-    //   .forwardGeocode('Madrid', options)
-    //   .then((result: NativeGeocoderResult[]) =>
-    //     console.log('The coordinates are: ', result)
-    //   )
-    //   .catch((error: any) => console.log(error));
+  degreesToRadians(degrees) {
+    return (degrees * Math.PI) / 180;
   }
 
   showSpinner() {

@@ -24,24 +24,32 @@
   <!--******************************* PRINCIPAL *******************************-->
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <h2>Ubicación Actual:</h2>
-        ]
+      <ion-col style="text-align: center">
+        <h3 style="font-weight: bold">Ubicación Actual</h3>
+        <p *ngIf="results">
+          {{results.thoroughfare}} {{results.subThoroughfare}},
+          {{results.subLocality}}, {{results.administrativeArea}},
+          {{results.postalCode}}, {{results.countryName}}
+        </p>
+        <h3 style="font-weight: bold">Destino</h3>
+        <p *ngIf="selectedAddress">{{selectedAddress}}</p>
       </ion-col>
     </ion-row>
-    <ion-row *ngFor="let key of keys">
-      <!-- <h2>Ubicación Actual: </h2>] -->
-      <ion-col style="text-align: right">{{key}}</ion-col>
-      <ion-col style="text-align: left; font-weight: bold"
-        >{{results[key]}}</ion-col
-      >
+    <ion-row>
+      <ion-col style="text-align: center">
+        <h3 style="font-weight: bold">Distancia Actual</h3>
+        <p *ngIf="currentDistance">{{currentDistance}} mts</p>
+        <h3 style="font-weight: bold">Distancia Mínima</h3>
+        <p *ngIf="minimunDistance">{{minimunDistance}} mts</p>
+      </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-searchbar
+          color="light"
+          placeholder="Buscar dirección"
           debounce="500"
           (ionChange)="search($event)"
-          [value]="selectedAddress"
         ></ion-searchbar>
         <div style="position: relative; width: 100%; z-index: 999">
           <ion-list lines="none" *ngIf="addresses.length > 0">
@@ -56,6 +64,32 @@
           </ion-list>
         </div>
       </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-item
+        style="
+          width: 70%;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        "
+      >
+        <ion-label position="floating">Distancia mínima</ion-label>
+        <ion-input type="number" [(ngModel)]="minimunDistance"></ion-input>
+        <ion-note slot="helper" color="dark"
+          >Ingrese una distancia en metros valida</ion-note
+        >
+        <ion-note slot="error">Distancia invalida</ion-note>
+      </ion-item>
+    </ion-row>
+    <ion-row>
+      <button
+        type="submit"
+        class="btn btn-danger"
+        style="margin-top: 2rem; margin-bottom: 1rem; width:18rem"
+      >
+        ACTIVAR
+      </button>
     </ion-row>
   </ion-grid>
 
