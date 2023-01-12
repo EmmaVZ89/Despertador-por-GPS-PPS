@@ -36,6 +36,17 @@ export class HomePage implements OnInit {
   minimunDistance: number;
   currentDistance: number;
 
+  flagCurrentAddress: boolean = false;
+  flagDestinationAddress: boolean = false;
+
+  idIntervalAlarm: any;
+  alarmActivated: boolean = false;
+  firstAlarmActivation: boolean = false;
+
+  contador: number = 0;
+
+  alarmSound: any = new Audio('../../assets/alarma1.mp3');
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -48,7 +59,6 @@ export class HomePage implements OnInit {
       if (user) {
         this.user = user;
         this.printCurrentPosition();
-        // this.calcularDistanciaEntreDosCoordenadas();
       }
     });
   } // end of ngOnInit
@@ -84,6 +94,7 @@ export class HomePage implements OnInit {
           this.longitude
         ) * 1000
       );
+      this.flagDestinationAddress = true;
       // console.log("Distancia = ", Math.round(this.currentDistance*1000), " mts");
       // console.log(this.selectedAddress, ' ', this.latitude, ' ', this.longitude);
     });
@@ -105,6 +116,7 @@ export class HomePage implements OnInit {
       .then((results: NativeGeocoderResult[]) => {
         this.results = results[0];
         this.keys = Object.keys(this.results);
+        this.flagCurrentAddress = true;
       });
   }
 
@@ -129,6 +141,45 @@ export class HomePage implements OnInit {
 
   degreesToRadians(degrees) {
     return (degrees * Math.PI) / 180;
+  }
+
+  activateAlarm() {
+    this.alarmActivated = true;
+    this.idIntervalAlarm = setInterval(() => {
+      this.contador++;
+      this.onSelect(this.selectedAddress);
+      // if (
+      //   this.currentDistance <= this.minimunDistance &&
+      //   !this.firstAlarmActivation
+      // ) {
+      //   this.firstAlarmActivation = true;
+      //   this.alarmSound.loop = true;
+      //   this.alarmSound.play();
+      // }
+      if (this.contador >= 5 && !this.firstAlarmActivation) {
+          this.firstAlarmActivation = true;
+          this.alarmSound.loop = true;
+          this.alarmSound.play();
+      }
+    }, 1000);
+  }
+
+  desactivateAlarm() {
+    clearInterval(this.idIntervalAlarm);
+    this.alarmSound.loop = false;
+    this.alarmSound.pause();
+    this.alarmSound.currentTime = 0;
+    this.reset();
+  }
+
+  reset(){
+    this.contador = 0;
+    this.firstAlarmActivation = false;
+    this.alarmActivated = false;
+    this.flagCurrentAddress = false;
+    this.flagDestinationAddress = false;
+    this.minimunDistance = 0;
+    this.printCurrentPosition();
   }
 
   showSpinner() {

@@ -25,6 +25,7 @@
   <ion-grid>
     <ion-row>
       <ion-col style="text-align: center">
+        <h1>{{contador}}</h1>
         <h3 style="font-weight: bold">Ubicación Actual</h3>
         <p *ngIf="results">
           {{results.thoroughfare}} {{results.subThoroughfare}},
@@ -46,6 +47,7 @@
     <ion-row>
       <ion-col>
         <ion-searchbar
+          [disabled]="alarmActivated"
           color="light"
           placeholder="Buscar dirección"
           debounce="500"
@@ -75,7 +77,11 @@
         "
       >
         <ion-label position="floating">Distancia mínima</ion-label>
-        <ion-input type="number" [(ngModel)]="minimunDistance"></ion-input>
+        <ion-input
+          [disabled]="alarmActivated"
+          type="number"
+          [(ngModel)]="minimunDistance"
+        ></ion-input>
         <ion-note slot="helper" color="dark"
           >Ingrese una distancia en metros valida</ion-note
         >
@@ -84,11 +90,23 @@
     </ion-row>
     <ion-row>
       <button
+        *ngIf="!alarmActivated"
+        [disabled]="!(flagDestinationAddress&&flagCurrentAddress&&minimunDistance>0)"
         type="submit"
-        class="btn btn-danger"
-        style="margin-top: 2rem; margin-bottom: 1rem; width:18rem"
+        class="btn btn-warning"
+        style="margin-top: 2rem; margin-bottom: 1rem; width: 18rem"
+        (click)="activateAlarm()"
       >
         ACTIVAR
+      </button>
+      <button
+        *ngIf="alarmActivated"
+        type="submit"
+        class="btn btn-danger"
+        style="margin-top: 2rem; margin-bottom: 1rem; width: 18rem"
+        (click)="desactivateAlarm()"
+      >
+        DESACTIVAR
       </button>
     </ion-row>
   </ion-grid>

@@ -5,11 +5,12 @@ ion-content {
     rgba(0, 0, 0, 1) 0%,
     rgba(245, 128, 4, 1) 100%
   );
-  
+
   overflow: hidden;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
-  .btn-danger {
+  .btn-danger,
+  .btn-warning {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
     display: block;
@@ -18,7 +19,8 @@ ion-content {
     border: 2px solid #fff;
     box-shadow: 2px 2px 3px #000;
   }
-  .btn-danger:active {
+  .btn-danger:active,
+  .btn-warning:active {
     transform: scale(0.9);
     transition: transform 0.3s;
   }
