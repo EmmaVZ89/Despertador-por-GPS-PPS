@@ -1,5 +1,5 @@
 <ion-content>
-  <!--******************************* LOGOUT  *******************************-->
+  <!--******************************* MENU  *******************************-->
   <ion-fab vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button color="dark">
       <ion-icon name="menu-sharp"></ion-icon>
@@ -18,11 +18,39 @@
           "
         ></ion-icon
       ></ion-fab-button>
+      <ion-fab-button
+        *ngIf="!viewAlarmHistory"
+        (click)="showAlarmList()"
+        style="border: 1px solid #000; border-radius: 50%"
+        ><ion-icon
+          name="list-circle"
+          style="
+            color: rgb(31, 152, 233);
+            background: rgb(255, 255, 255);
+            padding: 5px;
+            font-size: 3rem;
+          "
+        ></ion-icon
+      ></ion-fab-button>
+      <ion-fab-button
+        *ngIf="viewAlarmHistory"
+        (click)="showMainMenu()"
+        style="border: 1px solid #000; border-radius: 50%"
+        ><ion-icon
+          name="grid"
+          style="
+            color: rgb(31, 152, 233);
+            background: rgb(255, 255, 255);
+            padding: 5px;
+            font-size: 3rem;
+          "
+        ></ion-icon
+      ></ion-fab-button>
     </ion-fab-list>
   </ion-fab>
 
   <!--******************************* PRINCIPAL *******************************-->
-  <ion-grid>
+  <ion-grid *ngIf="!viewAlarmHistory">
     <!-- UBICACION ORIGEN Y DESTINO -->
     <ion-row style="text-align: center; background: rgba(0, 0, 0, 0.466)">
       <ion-col>
@@ -195,6 +223,71 @@
     </ion-row>
   </ion-grid>
 
+  <!--******************************* LISTA DE ALARMAS *******************************-->
+  <ion-grid *ngIf="viewAlarmHistory">
+    <ion-row *ngIf="listAlarmHistory">
+      <ion-col>
+        <h2 style="text-align: center">Historial de alarmas</h2>
+        <ion-card *ngFor="let alarm of listAlarmHistory">
+          <ion-card-header style="text-align: center">
+            <ion-card-title>{{alarm.date}} hs</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item>
+                <ion-thumbnail slot="start">
+                  <ion-icon
+                    name="locate"
+                    size="large"
+                    color="primary"
+                  ></ion-icon>
+                </ion-thumbnail>
+                <ion-text style="color: rgb(159, 201, 250); margin-bottom: 1rem"
+                  ><span style="font-weight: bolder; text-decoration: underline"
+                    >Origen</span
+                  >: {{alarm.origin}}</ion-text
+                >
+              </ion-item>
+              <ion-item>
+                <ion-thumbnail slot="start">
+                  <ion-icon name="pin" size="large" color="danger"></ion-icon>
+                </ion-thumbnail>
+                <ion-text style="color: rgb(255, 187, 187)"
+                  ><span style="font-weight: bolder; text-decoration: underline"
+                    >Destino</span
+                  >: {{alarm.destiny}}</ion-text
+                >
+              </ion-item>
+              <ion-item>
+                <ion-thumbnail slot="start">
+                  <ion-icon
+                    name="location"
+                    size="large"
+                    color="primary"
+                  ></ion-icon>
+                </ion-thumbnail>
+                <ion-text style="color: rgb(159, 201, 250)"
+                  ><span style="font-weight: bolder; text-decoration: underline"
+                    >Inicial</span
+                  >: {{alarm.initialDistance}} mts</ion-text
+                >
+              </ion-item>
+              <ion-item>
+                <ion-thumbnail slot="start">
+                  <ion-icon name="alarm" size="large" color="danger"></ion-icon>
+                </ion-thumbnail>
+                <ion-text style="color: rgb(255, 187, 187)"
+                  ><span style="font-weight: bolder; text-decoration: underline"
+                    >Mínima</span
+                  >: {{alarm.minimumDistance}} mts</ion-text
+                >
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <!--******************************* SPINNER *******************************-->
   <!-- <ion-spinner
     *ngIf="pressedButton"

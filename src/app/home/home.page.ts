@@ -49,6 +49,9 @@ export class HomePage implements OnInit {
 
   loading: any;
 
+  viewAlarmHistory: boolean = false;
+  listAlarmHistory: any[] = null;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -110,8 +113,8 @@ export class HomePage implements OnInit {
   }
 
   async printCurrentPosition() {
-    await this.showLoading("Cargardo ubicación...");
-    this.loading.present();
+    // await this.showLoading("Cargardo ubicación...");
+    // this.loading.present();
     const coordinates = await Geolocation.getCurrentPosition();
     this.currentLatitude = coordinates.coords.latitude;
     this.currentLongitude = coordinates.coords.longitude;
@@ -123,7 +126,7 @@ export class HomePage implements OnInit {
     this.nativeGeocoder
       .reverseGeocode(this.currentLatitude, this.currentLongitude, options)
       .then((results: NativeGeocoderResult[]) => {
-        this.loading.dismiss();
+        // this.loading.dismiss();
         this.results = results[0];
         this.keys = Object.keys(this.results);
         this.flagCurrentAddress = true;
@@ -183,7 +186,7 @@ export class HomePage implements OnInit {
     this.flagCurrentAddress = false;
     this.flagDestinationAddress = false;
     this.minimunDistance = 0;
-    this.printCurrentPosition();
+    // this.printCurrentPosition();
   }
 
   createAlarm() {
@@ -203,7 +206,7 @@ export class HomePage implements OnInit {
       coorOrigin: coorOrigin,
       coorDestiny: coorDestiny,
       minimumDistance: this.minimunDistance,
-      initialDistance: this.currentDistance
+      initialDistance: this.currentDistance,
     };
     this.alarmService.createAlarm(alarm);
   }
@@ -226,4 +229,21 @@ export class HomePage implements OnInit {
       this.pressedButton = false;
     }, 2000);
   } // end of showSpinner
+
+  async showAlarmList() {
+    this.listAlarmHistory = null;
+    this.viewAlarmHistory = true;
+    await this.showLoading('Buscando historial...');
+    this.loading.present();
+    this.alarmService.getAlarms(this.user.userUid).subscribe((alarms: any) => {
+      this.listAlarmHistory = alarms;
+      this.loading.dismiss();
+    });
+  }
+
+  showMainMenu() {
+    this.listAlarmHistory = null;
+    this.viewAlarmHistory = false;
+    this.printCurrentPosition();
+  }
 }

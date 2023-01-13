@@ -10,10 +10,10 @@ export class AlarmService {
   createAlarm(alarm: any) {
     this.angularFirestore.collection<any>('alarmas').add(alarm);
   }
-  
-  getAlarms() {
+
+  getAlarms(uid) {
     const collection = this.angularFirestore.collection<any>('alarmas', (ref) =>
-      ref.orderBy('date', 'asc')
+      ref.where('userUid', '==', uid)
     );
     return collection.valueChanges();
   }
