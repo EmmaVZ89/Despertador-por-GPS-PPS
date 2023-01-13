@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { LoadingController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
 
 import { Geolocation } from '@capacitor/geolocation';
@@ -43,15 +44,16 @@ export class HomePage implements OnInit {
   alarmActivated: boolean = false;
   firstAlarmActivation: boolean = false;
 
-  contador: number = 0;
-
   alarmSound: any = new Audio('../../assets/alarma1.mp3');
+
+  loading: any;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private nativeGeocoder: NativeGeocoder,
-    private mapboxService: MapboxService
+    private mapboxService: MapboxService,
+    private LoadingController: LoadingController
   ) {}
 
   ngOnInit(): void {
@@ -95,15 +97,14 @@ export class HomePage implements OnInit {
         ) * 1000
       );
       this.flagDestinationAddress = true;
-      // console.log("Distancia = ", Math.round(this.currentDistance*1000), " mts");
-      // console.log(this.selectedAddress, ' ', this.latitude, ' ', this.longitude);
     });
     this.addresses = [];
   }
 
   async printCurrentPosition() {
+    await this.showLoading("Cargardo ubicación...");
+    this.loading.present();
     const coordinates = await Geolocation.getCurrentPosition();
-    // console.log('Current position:', coordinates);
     this.currentLatitude = coordinates.coords.latitude;
     this.currentLongitude = coordinates.coords.longitude;
 
@@ -114,6 +115,7 @@ export class HomePage implements OnInit {
     this.nativeGeocoder
       .reverseGeocode(this.currentLatitude, this.currentLongitude, options)
       .then((results: NativeGeocoderResult[]) => {
+        this.loading.dismiss();
         this.results = results[0];
         this.keys = Object.keys(this.results);
         this.flagCurrentAddress = true;
@@ -146,20 +148,14 @@ export class HomePage implements OnInit {
   activateAlarm() {
     this.alarmActivated = true;
     this.idIntervalAlarm = setInterval(() => {
-      this.contador++;
       this.onSelect(this.selectedAddress);
-      // if (
-      //   this.currentDistance <= this.minimunDistance &&
-      //   !this.firstAlarmActivation
-      // ) {
-      //   this.firstAlarmActivation = true;
-      //   this.alarmSound.loop = true;
-      //   this.alarmSound.play();
-      // }
-      if (this.contador >= 5 && !this.firstAlarmActivation) {
-          this.firstAlarmActivation = true;
-          this.alarmSound.loop = true;
-          this.alarmSound.play();
+      if (
+        this.currentDistance <= this.minimunDistance &&
+        !this.firstAlarmActivation
+      ) {
+        this.firstAlarmActivation = true;
+        this.alarmSound.loop = true;
+        this.alarmSound.play();
       }
     }, 1000);
   }
@@ -172,14 +168,25 @@ export class HomePage implements OnInit {
     this.reset();
   }
 
-  reset(){
-    this.contador = 0;
+  reset() {
     this.firstAlarmActivation = false;
     this.alarmActivated = false;
     this.flagCurrentAddress = false;
     this.flagDestinationAddress = false;
     this.minimunDistance = 0;
     this.printCurrentPosition();
+  }
+
+  async showLoading(message:string) {
+    try {
+      this.loading = await this.LoadingController.create({
+        message: message,
+        spinner: 'crescent',
+        showBackdrop: true,
+      });  
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   showSpinner() {

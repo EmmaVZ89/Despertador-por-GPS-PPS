@@ -24,4 +24,9 @@ ion-content {
     transform: scale(0.9);
     transition: transform 0.3s;
   }
+
+  .btn-location:active {
+    transform: scale(0.8);
+    transition: transform 0.3s;
+  }
 }
