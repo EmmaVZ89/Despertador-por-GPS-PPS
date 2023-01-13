@@ -14,6 +14,7 @@ import {
   NativeGeocoderOptions,
 } from '@awesome-cordova-plugins/native-geocoder/ngx';
 import { features } from 'process';
+import { AlarmService } from '../services/alarm.service';
 
 @Component({
   selector: 'app-home',
@@ -53,12 +54,19 @@ export class HomePage implements OnInit {
     private router: Router,
     private nativeGeocoder: NativeGeocoder,
     private mapboxService: MapboxService,
-    private LoadingController: LoadingController
+    private LoadingController: LoadingController,
+    private alarmService: AlarmService
   ) {}
 
   ngOnInit(): void {
+    setTimeout(async () => {
+      await this.showLoading('');
+      this.loading.present();
+    }, 0);
     this.authService.user$.subscribe((user: any) => {
+      this.loading.dismiss();
       if (user) {
+        // console.log(user);
         this.user = user;
         this.printCurrentPosition();
       }
@@ -146,6 +154,7 @@ export class HomePage implements OnInit {
   }
 
   activateAlarm() {
+    this.createAlarm();
     this.alarmActivated = true;
     this.idIntervalAlarm = setInterval(() => {
       this.onSelect(this.selectedAddress);
@@ -177,13 +186,35 @@ export class HomePage implements OnInit {
     this.printCurrentPosition();
   }
 
-  async showLoading(message:string) {
+  createAlarm() {
+    const date = moment(new Date()).format('DD-MM-YYYY HH:mm:ss');
+    const origin = `${this.results.thoroughfare} ${this.results.subThoroughfare}, ${this.results.subLocality}, ${this.results.administrativeArea}, ${this.results.postalCode}, ${this.results.countryName}`;
+    const destiny = this.selectedAddress;
+    const coorOrigin = {
+      latitude: this.currentLatitude,
+      logitude: this.currentLongitude,
+    };
+    const coorDestiny = { latitude: this.latitude, longitude: this.longitude };
+    const alarm: any = {
+      userUid: this.user.userUid,
+      date: date,
+      origin: origin,
+      destiny: destiny,
+      coorOrigin: coorOrigin,
+      coorDestiny: coorDestiny,
+      minimumDistance: this.minimunDistance,
+      initialDistance: this.currentDistance
+    };
+    this.alarmService.createAlarm(alarm);
+  }
+
+  async showLoading(message: string) {
     try {
       this.loading = await this.LoadingController.create({
         message: message,
         spinner: 'crescent',
         showBackdrop: true,
-      });  
+      });
     } catch (error) {
       console.log(error.message);
     }

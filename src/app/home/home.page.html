@@ -23,17 +23,10 @@
 
   <!--******************************* PRINCIPAL *******************************-->
   <ion-grid>
-    <ion-row>
-      <ion-col style="text-align: center">
-        <div
-          style="
-            background: rgb(0, 129, 235);
-            padding: 1px;
-            border-radius: 1rem;
-            box-shadow: 2px 2px 4px #fff;
-            margin-bottom: 2px;
-          "
-        >
+    <!-- UBICACION ORIGEN Y DESTINO -->
+    <ion-row style="text-align: center; background: rgba(0, 0, 0, 0.466)">
+      <ion-col>
+        <div>
           <h3 style="font-weight: bold">
             <ion-icon
               (click)="printCurrentPosition()"
@@ -49,21 +42,13 @@
             ></ion-icon
             >Origen
           </h3>
-          <p *ngIf="results">
+          <p style="color: rgb(159, 201, 250)" *ngIf="results">
             {{results.thoroughfare}} {{results.subThoroughfare}},
             {{results.subLocality}}, {{results.administrativeArea}},
             {{results.postalCode}}, {{results.countryName}}
           </p>
         </div>
-        <div
-          style="
-            background: rgb(235, 64, 64);
-            padding: 1px;
-            border-radius: 1rem;
-            box-shadow: 2px 2px 4px #fff;
-            margin-bottom: 2px;
-          "
-        >
+        <div>
           <h3 style="font-weight: bold">
             <ion-icon
               style="
@@ -77,71 +62,15 @@
             ></ion-icon
             >Destino
           </h3>
-          <p *ngIf="selectedAddress">{{selectedAddress}}</p>
+          <p style="color: rgb(255, 187, 187)" *ngIf="selectedAddress">
+            {{selectedAddress}}
+          </p>
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col style="text-align: center">
-        <div
-          style="
-            background: rgb(0, 129, 235);
-            padding: 1px;
-            border-radius: 1rem;
-            box-shadow: 2px 2px 4px #fff;
-            margin-bottom: 2px;
-          "
-        >
-          <h3 style="font-weight: bold">
-            <ion-icon
-              style="
-                color: rgb(0, 129, 235);
-                background: #fff;
-                padding: 5px;
-                border-radius: 10px;
-                margin-right: 1rem;
-              "
-              name="location"
-            ></ion-icon
-            >Dist. Actual<span
-              style="font-weight: bolder"
-              *ngIf="currentDistance"
-            >
-              {{currentDistance}} mts</span
-            >
-          </h3>
-        </div>
-        <div
-          style="
-            background: rgb(235, 64, 64);
-            padding: 1px;
-            border-radius: 1rem;
-            box-shadow: 2px 2px 4px #fff;
-            margin-bottom: 2px;
-          "
-        >
-          <h3 style="font-weight: bold">
-            <ion-icon
-              style="
-                color: rgb(255, 0, 0);
-                background: #fff;
-                padding: 5px;
-                border-radius: 10px;
-                margin-right: 1rem;
-              "
-              name="alarm"
-            ></ion-icon
-            >Dist. Mínima<span
-              style="font-weight: bolder"
-              *ngIf="minimunDistance"
-            >
-              {{minimunDistance}} mts</span
-            >
-          </h3>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
+
+    <!-- BUSCAR DIRECCIÓN -->
+    <ion-row style="text-align: center; background: rgba(0, 0, 0, 0.466)">
       <ion-col>
         <ion-searchbar
           [disabled]="alarmActivated"
@@ -164,11 +93,66 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
+
+    <!-- DISTANCIA ACTUAL Y MÍNIMA -->
+    <ion-row style="text-align: center; background: rgba(0, 0, 0, 0.466)">
+      <ion-col>
+        <div>
+          <h3 style="font-weight: bold">
+            <ion-icon
+              style="
+                color: rgb(0, 129, 235);
+                background: #fff;
+                padding: 5px;
+                border-radius: 10px;
+                margin-right: 1rem;
+              "
+              name="location"
+            ></ion-icon
+            >Dist. Actual<span
+              style="font-weight: bolder; color: rgb(0, 129, 235)"
+              *ngIf="currentDistance"
+            >
+              {{currentDistance}} mts</span
+            ><span></span>
+          </h3>
+        </div>
+        <div>
+          <h3 style="font-weight: bold">
+            <ion-icon
+              style="
+                color: rgb(255, 0, 0);
+                background: #fff;
+                padding: 5px;
+                border-radius: 10px;
+                margin-right: 1rem;
+              "
+              name="alarm"
+            ></ion-icon
+            >Dist. Mínima<span
+              style="font-weight: bolder; color: rgb(255, 0, 0)"
+              *ngIf="minimunDistance"
+            >
+              {{minimunDistance}} mts</span
+            >
+          </h3>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <!-- INPUT DISTANCIA MÍNIMA -->
+    <ion-row
+      style="
+        text-align: center;
+        background: rgba(0, 0, 0, 0.466);
+        box-shadow: 2px 2px 4px #000;
+      "
+    >
       <ion-item
         style="
           width: 70%;
           display: block;
+          margin-top: 1rem;
           margin-left: auto;
           margin-right: auto;
           z-index: 10;
@@ -186,6 +170,8 @@
         <ion-note slot="error">Distancia invalida</ion-note>
       </ion-item>
     </ion-row>
+
+    <!-- ACTIVAR Y DESACTIVAR -->
     <ion-row>
       <button
         *ngIf="!alarmActivated"
