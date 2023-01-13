@@ -33,6 +33,7 @@ export class HomePage implements OnInit {
   currentLatitude: number = 0;
   currentLongitude: number = 0;
   results: NativeGeocoderResult;
+  resultsMap: NativeGeocoderResult;
   keys: string[] = [];
 
   minimunDistance: number;
@@ -51,6 +52,9 @@ export class HomePage implements OnInit {
 
   viewAlarmHistory: boolean = false;
   listAlarmHistory: any[] = null;
+
+  mapLatitude: any;
+  mapLongitude: any;
 
   constructor(
     private authService: AuthService,
@@ -113,11 +117,15 @@ export class HomePage implements OnInit {
   }
 
   async printCurrentPosition() {
-    // await this.showLoading("Cargardo ubicación...");
-    // this.loading.present();
+    await this.showLoading('Cargardo ubicación...');
+    this.loading.present();
     const coordinates = await Geolocation.getCurrentPosition();
     this.currentLatitude = coordinates.coords.latitude;
     this.currentLongitude = coordinates.coords.longitude;
+
+    this.mapboxService.buildMap(this.currentLatitude, this.currentLongitude);
+    // this.mapboxService.setOriginMarker(this.currentLatitude, this.currentLongitude);
+    this.setMarker();
 
     const options: NativeGeocoderOptions = {
       maxResults: 1,
@@ -126,7 +134,7 @@ export class HomePage implements OnInit {
     this.nativeGeocoder
       .reverseGeocode(this.currentLatitude, this.currentLongitude, options)
       .then((results: NativeGeocoderResult[]) => {
-        // this.loading.dismiss();
+        this.loading.dismiss();
         this.results = results[0];
         this.keys = Object.keys(this.results);
         this.flagCurrentAddress = true;
@@ -244,6 +252,49 @@ export class HomePage implements OnInit {
   showMainMenu() {
     this.listAlarmHistory = null;
     this.viewAlarmHistory = false;
-    this.printCurrentPosition();
+    this.mapboxService.resetMap();
+    setTimeout(() => {
+      this.printCurrentPosition();
+    }, 50);
+  }
+
+  setMarker() {
+    this.mapboxService.map.on('click', (e) => {
+      if (e) {
+        this.mapLatitude = e.lngLat.wrap().lat;
+        this.mapLongitude = e.lngLat.wrap().lng;
+
+        // this.mapboxService.setDestinyMarker(
+        //   this.mapLatitude,
+        //   this.mapLongitude
+        // );
+
+        this.latitude = this.mapLatitude;
+        this.longitude = this.mapLongitude;
+
+        this.currentDistance = Math.round(
+          this.calculateDistanceBetweenTwoCoordinates(
+            this.currentLatitude,
+            this.currentLongitude,
+            this.latitude,
+            this.longitude
+          ) * 1000
+        );
+        this.flagDestinationAddress = true;
+
+        const options: NativeGeocoderOptions = {
+          maxResults: 1,
+          useLocale: false,
+        };
+
+        this.nativeGeocoder
+          .reverseGeocode(this.mapLatitude, this.mapLongitude, options)
+          .then((results: NativeGeocoderResult[]) => {
+            this.resultsMap = results[0];
+            this.selectedAddress = `${this.resultsMap.thoroughfare} ${this.resultsMap.subThoroughfare}, ${this.resultsMap.subLocality}, ${this.resultsMap.administrativeArea}, ${this.resultsMap.postalCode}, ${this.resultsMap.countryName}`;
+            this.flagCurrentAddress = true;
+          });
+      }
+    });
   }
 }

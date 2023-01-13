@@ -122,6 +122,21 @@
       </ion-col>
     </ion-row>
 
+    <!-- VISTA DEL MAPA -->
+    <ion-row style="text-align: center; background: rgba(0, 0, 0, 0.466)">
+      <ion-col>
+        <div id="map-container">
+          <div
+            class="map"
+            id="map-box"
+            tabindex="0"
+            (click)="setMarker()"
+          >
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+
     <!-- DISTANCIA ACTUAL Y MÍNIMA -->
     <ion-row style="text-align: center; background: rgba(0, 0, 0, 0.466)">
       <ion-col>
@@ -228,12 +243,23 @@
     <ion-row *ngIf="listAlarmHistory">
       <ion-col>
         <h2 style="text-align: center">Historial de alarmas</h2>
-        <ion-card *ngFor="let alarm of listAlarmHistory">
+        <ion-card
+          style="
+            background: rgba(0, 0, 0, 0.466);
+            border-radius: 10px;
+            box-shadow: 2px 2px 2px #000;
+            margin: 0px;
+            margin-bottom: 1rem;
+            padding: 0px;
+            width: 100%;
+          "
+          *ngFor="let alarm of listAlarmHistory"
+        >
           <ion-card-header style="text-align: center">
             <ion-card-title>{{alarm.date}} hs</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-list>
+            <ion-list style="border: 1px solid #fff; border-radius: 10px">
               <ion-item>
                 <ion-thumbnail slot="start">
                   <ion-icon
@@ -288,6 +314,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <!--******************************* SPINNER *******************************-->
   <!-- <ion-spinner
     *ngIf="pressedButton"
