@@ -1,4 +1,4 @@
-package com.conversandoenelaulapps.app;
+package com.despertadorgpspps.app;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -104,7 +104,7 @@ export class HomePage implements OnInit {
       this.latitude = features[0].center[1];
       this.longitude = features[0].center[0];
       this.currentDistance = Math.round(
-        this.calculateDistanceBetweenTwoCoordinates(
+        HomePage.calculateDistanceBetweenTwoCoordinates(
           this.currentLatitude,
           this.currentLongitude,
           this.latitude,
@@ -117,51 +117,33 @@ export class HomePage implements OnInit {
   }
 
   async printCurrentPosition() {
-    await this.showLoading('Cargardo ubicación...');
-    this.loading.present();
-    const coordinates = await Geolocation.getCurrentPosition();
-    this.currentLatitude = coordinates.coords.latitude;
-    this.currentLongitude = coordinates.coords.longitude;
+    if (!this.alarmActivated) {
+      await this.showLoading('Cargardo ubicación...');
+      this.loading.present();
+      const coordinates = await Geolocation.getCurrentPosition();
+      this.currentLatitude = coordinates.coords.latitude;
+      this.currentLongitude = coordinates.coords.longitude;
 
-    this.mapboxService.buildMap(this.currentLatitude, this.currentLongitude);
-    // this.mapboxService.setOriginMarker(this.currentLatitude, this.currentLongitude);
-    this.setMarker();
+      this.mapboxService.buildMap(this.currentLatitude, this.currentLongitude);
+      // this.mapboxService.setOriginMarker(
+      //   this.currentLatitude,
+      //   this.currentLongitude
+      // );
+      this.setMarker();
 
-    const options: NativeGeocoderOptions = {
-      maxResults: 1,
-      useLocale: false,
-    };
-    this.nativeGeocoder
-      .reverseGeocode(this.currentLatitude, this.currentLongitude, options)
-      .then((results: NativeGeocoderResult[]) => {
-        this.loading.dismiss();
-        this.results = results[0];
-        this.keys = Object.keys(this.results);
-        this.flagCurrentAddress = true;
-      });
-  }
-
-  calculateDistanceBetweenTwoCoordinates(lat1, lon1, lat2, lon2) {
-    // Convertir todas las coordenadas a radianes
-    lat1 = this.degreesToRadians(lat1);
-    lon1 = this.degreesToRadians(lon1);
-    lat2 = this.degreesToRadians(lat2);
-    lon2 = this.degreesToRadians(lon2);
-    // Aplicar fórmula
-    const RADIO_TIERRA_EN_KILOMETROS = 6371;
-    let diferenciaEntreLongitudes = lon2 - lon1;
-    let diferenciaEntreLatitudes = lat2 - lat1;
-    let a =
-      Math.pow(Math.sin(diferenciaEntreLatitudes / 2.0), 2) +
-      Math.cos(lat1) *
-        Math.cos(lat2) *
-        Math.pow(Math.sin(diferenciaEntreLongitudes / 2.0), 2);
-    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return RADIO_TIERRA_EN_KILOMETROS * c;
-  }
-
-  degreesToRadians(degrees) {
-    return (degrees * Math.PI) / 180;
+      const options: NativeGeocoderOptions = {
+        maxResults: 1,
+        useLocale: false,
+      };
+      this.nativeGeocoder
+        .reverseGeocode(this.currentLatitude, this.currentLongitude, options)
+        .then((results: NativeGeocoderResult[]) => {
+          this.loading.dismiss();
+          this.results = results[0];
+          this.keys = Object.keys(this.results);
+          this.flagCurrentAddress = true;
+        });
+    }
   }
 
   activateAlarm() {
@@ -259,8 +241,8 @@ export class HomePage implements OnInit {
   }
 
   setMarker() {
-    this.mapboxService.map.on('click', (e) => {
-      if (e) {
+    if (!this.alarmActivated) {
+      this.mapboxService.map.on('click', (e) => {
         this.mapLatitude = e.lngLat.wrap().lat;
         this.mapLongitude = e.lngLat.wrap().lng;
 
@@ -273,7 +255,7 @@ export class HomePage implements OnInit {
         this.longitude = this.mapLongitude;
 
         this.currentDistance = Math.round(
-          this.calculateDistanceBetweenTwoCoordinates(
+          HomePage.calculateDistanceBetweenTwoCoordinates(
             this.currentLatitude,
             this.currentLongitude,
             this.latitude,
@@ -294,7 +276,30 @@ export class HomePage implements OnInit {
             this.selectedAddress = `${this.resultsMap.thoroughfare} ${this.resultsMap.subThoroughfare}, ${this.resultsMap.subLocality}, ${this.resultsMap.administrativeArea}, ${this.resultsMap.postalCode}, ${this.resultsMap.countryName}`;
             this.flagCurrentAddress = true;
           });
-      }
-    });
+      });
+    }
+  }
+
+  static calculateDistanceBetweenTwoCoordinates(lat1, lon1, lat2, lon2) {
+    // Convertir todas las coordenadas a radianes
+    lat1 = HomePage.degreesToRadians(lat1);
+    lon1 = HomePage.degreesToRadians(lon1);
+    lat2 = HomePage.degreesToRadians(lat2);
+    lon2 = HomePage.degreesToRadians(lon2);
+    // Aplicar fórmula
+    const RADIO_TIERRA_EN_KILOMETROS = 6371;
+    let diferenciaEntreLongitudes = lon2 - lon1;
+    let diferenciaEntreLatitudes = lat2 - lat1;
+    let a =
+      Math.pow(Math.sin(diferenciaEntreLatitudes / 2.0), 2) +
+      Math.cos(lat1) *
+        Math.cos(lat2) *
+        Math.pow(Math.sin(diferenciaEntreLongitudes / 2.0), 2);
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return RADIO_TIERRA_EN_KILOMETROS * c;
+  }
+
+  static degreesToRadians(degrees) {
+    return (degrees * Math.PI) / 180;
   }
 }
