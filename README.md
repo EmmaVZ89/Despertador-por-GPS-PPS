@@ -33,7 +33,7 @@
  <hr>
  <h2 align="center">SPLASH SCREEN</h2>
  <p align="center">
-   <img width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/1-splash.gif">
+   <img width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/1-splash.gif">
  </p>
  <hr>
  
@@ -41,46 +41,47 @@
  <h2 align="center">INICIO RÁPIDO</h2>
  <p align="center">Se pueden seleccionar 3 diferentes tipo de usuarios para probar la aplicación</p>
  <p align="center">
-   <img width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/2-inicio.gif">
+   <img width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/2-inicio.gif">
  </p>
  <hr>
  
  <hr>
- <h2 align="center">LISTADO DE USUARIOS</h2>
- <p align="center">Se podrá ver el listado de usuarios ordenados alfabeticamente.</p>
+ <h2 align="center">BUSCADOR</h2>
+ <p align="center">Se podrá buscar una dirección en particular viendo los resultados sugeridos y seleccionando el correcto.</p>
  <p align="center">
-   <img width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/3-listado.gif">
+   <img width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/3-buscador.gif">
  </p>
  <hr>
  
  <hr>
- <h2 align="center">ESCANEO</h2>
- <p align="center">Es posible escanear el código QR del DNI para que se autocompleten Apellido, Nombre y número de DNI.</p>
+ <h2 align="center">MAPA</h2>
+ <p align="center">Es posible seleccionar el punto de destino desde un mapa.</p>
  <p align="center">
-   <img width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/4-escaneo.gif">
+   <img width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/4-mapa.gif">
  </p>
  <hr>
  
  <hr>
- <h2 align="center">FOTO</h2>
- <p align="center">Se debe sacar una foto para completar los datos del nuevo usuario.</p>
+ <h2 align="center">ALARMA</h2>
+ <p align="center">Se debe seleccionar la distancia mínima para indicar en que punto se quiere que se accione la alarma, luego hay que presionar el botón ACTIVAR.</p>
  <p align="center">
-   <img width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/5-foto.gif">
+   <img width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/5-alarma.gif">
  </p>
  <hr>
  
  <hr>
- <h2 align="center">NUEVO USUARIO</h2>
- <p align="center">Una vez completados todos los campos del formulario de manera satisfactoria y subida la foto es posible registrar el nuevo usuario.</p>
+ <h2 align="center">HISTORIAL</h2>
+ <p align="center">Es posible ver el historial de alarmas del usuario que inició sesión.</p>
  <p align="center">
-   <img width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/6-nuevo-usuario.gif">
+   <img width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/6-historial.gif">
  </p>
  <hr>
- 
+  
  <hr>
  <h2 align="center">VISTAS</h2>
- <img align="left" width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/7%20login.png">
- <img align="left" width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/8%20formulario.png">
- <img align="left" width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/9%20listado.png">
- <img align="left" width=200 src="https://github.com/EmmaVZ89/Administracion-de-Usuarios-PPS/blob/main/readme/10%20escaner.png">
+ <img align="left" width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/7%20inicio.png">
+ <img align="left" width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/8%20principal.png">
+ <img align="left" width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/9%20distancias.png">
+ <img align="left" width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/10%20historial.png">
+ <img align="left" width=200 src="https://github.com/EmmaVZ89/Despertador-por-GPS-PPS/blob/main/readme/11%20buscador.png">
  
